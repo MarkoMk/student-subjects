@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Update Student</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #F8F9FA;
+                margin: 0;
+                padding: 20px;
+            }
+
+            h2 {
+                text-align: center;
+                color: #333;
+            }
+
+            .container_update {
+                display: flex;
+                flex-direction: column;
+                max-width: 400px;
+                margin: auto;
+                padding: 20px;
+                background-color: #FFF;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            form label {
+                font-weight: bold;
+                margin-top: 10px;
+                text-align: center;
+                width: 100%;
+            }
+
+            form input[type="text"], form select {
+                margin-bottom: 15px;
+                padding: 8px;
+                font-size: 14px;
+                width: calc(100% - 20px);
+                border-radius: 5px;
+                border: 1px solid #CCC;
+            }
+
+            input[type="submit"], input[type="button"] {
+                cursor: pointer;
+                padding: 8px 12px;
+                font-size: 14px;
+                margin-top: 10px;
+                margin-bottom: 20px;
+                width: auto;
+                border-radius: 5px;
+                border: 1px solid #CCC;
+                background-color: #F0F0F0;
+            }
+
+            input[type="submit"]:hover, input[type="button"]:hover {
+                background-color: #E0E0E0;
+            }
+        </style>
+    </head>
+
+    <body>
+    <h2>Update Student</h2>
+
+    <div class="container_update">
+        <form id="updateForm">
+            <input type="hidden" name="studentId" th:value="${student.id}"/>
+
+            <label for="newFirstName">Insert New First Name: </label>
+            <input type="text" id="newFirstName" name="newFirstName" th:value="${student.firstName}" required/>
+
+            <label for="newLastName">Insert New Last Name: </label>
+            <input type="text" id="newLastName" name="newLastName" th:value="${student.lastName}" required/>
+
+            <label for="newIndex">Insert New Index: </label>
+            <input type="text" id="newIndex" name="newIndex" th:value="${student.index}" required/>
+
+            <label for="subject">Select New Subjects: </label>
+            <select id="subject" name="subject" multiple>
+                <option value="" style="color:#A9A9A9; padding-bottom:5px;">Unselect All</option>
+                <th:block th:each="subject : ${subjects}">
+                    <option th:value="${subject.id}" th:text="${subject.subjectName}"
+                            th:selected="${#lists.contains(student.subjects, subject)}"></option>
+                </th:block>
+            </select>
+
+            <input type="submit" value="Update Student"/>
+            <input type="button" onclick="location.href = '/students'" value="Cancel"/>
+        </form>
+    </div>
+
+    <script>
+        const subjectSelect = document.getElementById('subject');
+
+        subjectSelect.addEventListener('mousedown', function (event) {
+            const option = event.target;
+
+            if (option.value === "") {
+                event.preventDefault();
+                Array.from(subjectSelect.options).forEach(opt => {
+                    opt.selected = false;
+                });
+            } else {
+                event.preventDefault();
+                option.selected = !option.selected;
+            }
+
+            subjectSelect.focus();
+        });
+
+        document.getElementById('updateForm').onsubmit = function(event) {
+            event.preventDefault();
+
+            const studentId = document.querySelector('input[name="studentId"]').value;
+            const newFirstName = document.getElementById('newFirstName').value;
+            const newLastName = document.getElementById('newLastName').value;
+            const newIndex = document.getElementById('newIndex').value;
+
+            const subjectSelect = document.getElementById('subject');
+            const selectedSubjects = Array.from(subjectSelect.selectedOptions).map(option => option.value);
+
+            fetch(`http://localhost:8080/api/students/${studentId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    firstName: newFirstName,
+                    lastName: newLastName,
+                    index: newIndex,
+                    subjectIds: selectedSubjects
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('A student with the same index already exists!');
+                }
+                return response.json();
+            })
+            .then(() => {
+                alert('Student updated successfully!');
+                location.href = '/students';
+            })
+            .catch(error => {
+                alert('Error: ' + error.message);
+            });
+        };
+    </script>
+    </body>
+
+</html>

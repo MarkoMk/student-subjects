@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
+    <div class="space-y-4">
+        <div>
+            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+            <input type="text" id="username" name="username" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter your username" required>
+        </div>
+        <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <input type="password" id="password" name="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter your password" required>
+        </div>
+        <div class="flex items-center">
+            <input type="checkbox" id="remember" name="remember" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+            <label for="remember" class="ml-2 block text-sm text-gray-900">Keep me logged in</label>
+        </div>
+        <button type="button" onclick="handleLogin()" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Sign In</button>
+        <button type="button" onclick="openSignupPopup()" class="w-full bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Sign Up</button>
+    </div>
+</div>
+
+<!-- Signup Popup -->
+<div id="signupPopup" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Sign Up</h2>
+        <div class="space-y-4">
+            <button type="button" onclick="handleGoogleSignup()" class="w-full bg-white text-gray-700 py-2 px-4 border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.94 14.24c2.88 0 5.44 1.04 7.44 2.88l5.6-5.6C33.36 8.24 28.8 6 23.94 6 14.88 6 7.44 12.32 4.8 20.64l6.48 5.04c1.6-4.8 6.24-8.32 12.66-8.32z" fill="#4285F4"/>
+                    <path d="M23.94 14.24c-2.88 0-5.44 1.04-7.44 2.88l-5.6-5.6C14.52 8.24 19.08 6 23.94 6c9.06 0 16.5 6.32 19.14 14.64l-6.48 5.04c-1.6-4.8-6.24-8.32-12.66-8.32z" fill="#34A853"/>
+                    <path d="M23.94 33.76c-6.42 0-11.06-3.52-12.66-8.32l-6.48 5.04C7.44 35.68 14.88 42 23.94 42c4.86 0 9.42-2.24 13.02-5.52l-5.6-5.6c-2 1.84-4.56 2.88-7.42 2.88z" fill="#FBBC05"/>
+                    <path d="M23.94 33.76c6.42 0 11.06-3.52 12.66-8.32l6.48 5.04C40.44 35.68 33 42 23.94 42c-4.86 0-9.42-2.24-13.02-5.52l5.6-5.6c2 1.84 4.56 2.88 7.42 2.88z" fill="#EA4335"/>
+                </svg>
+                Sign up with Google
+            </button>
+            <div class="flex items-center">
+                <div class="flex-grow border-t border-gray-300"></div>
+                <span class="mx-4 text-sm text-gray-600">or</span>
+                <div class="flex-grow border-t border-gray-300"></div>
+            </div>
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input type="text" id="name" name="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter your name" required>
+            </div>
+            <div>
+                <label for="surname" class="block text-sm font-medium text-gray-700">Surname</label>
+                <input type="text" id="surname" name="surname" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter your surname" required>
+            </div>
+            <div>
+                <label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+                <input type="date" id="dob" name="dob" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+            </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter your email" required>
+            </div>
+            <div>
+                <label for="signup-password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" id="signup-password" name="signup-password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter your password" required>
+            </div>
+            <div>
+                <label for="confirm-password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Confirm your password" required>
+            </div>
+            <div class="flex justify-end space-x-2">
+                <button type="button" onclick="closeSignupPopup()" class="bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Cancel</button>
+                <button type="button" onclick="handleSignup()" class="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openSignupPopup() {
+        document.getElementById('signupPopup').classList.remove('hidden');
+    }
+
+    function closeSignupPopup() {
+        document.getElementById('signupPopup').classList.add('hidden');
+    }
+
+    async function handleLogin() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await response.json();
+            alert(data.message);
+            if (response.ok) {
+                // Redirect or handle successful login
+                window.location.href = '/dashboard'; // Example redirect
+            }
+        } catch (error) {
+            alert('Error during login: ' + error.message);
+        }
+    }
+
+    async function handleSignup() {
+        const name = document.getElementById('name').value;
+        const surname = document.getElementById('surname').value;
+        const dob = document.getElementById('dob').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        try {
+            const response = await fetch('/api/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, surname, dob, email, password, confirmPassword })
+            });
+            const data = await response.json();
+            alert(data.message);
+            if (response.ok) {
+                closeSignupPopup();
+                // Optionally redirect or clear form
+            }
+        } catch (error) {
+            alert('Error during signup: ' + error.message);
+        }
+    }
+
+    async function handleGoogleSignup() {
+        // Note: Actual Google OAuth requires client-side Google Sign-In SDK
+        // and server-side token validation. This is a placeholder.
+        try {
+            const response = await fetch('/api/google-signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({}) // Would include Google ID token in real implementation
+            });
+            const data = await response.json();
+            alert(data.message);
+            if (response.ok) {
+                closeSignupPopup();
+                // Optionally redirect
+            }
+        } catch (error) {
+            alert('Error during Google signup: ' + error.message);
+        }
+    }
+</script>
+</body>
+</html>

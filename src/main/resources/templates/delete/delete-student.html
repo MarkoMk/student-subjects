@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+    <head>
+        <title>Delete Student</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #F8F9FA;
+                margin: 0;
+                padding: 20px;
+            }
+
+            h2 {
+                text-align: center;
+                color: #333;
+            }
+
+            .container_delete {
+                display: flex;
+                flex-direction: column;
+                max-width: 400px;
+                margin: auto;
+                padding: 20px;
+                background-color: #FFF;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
+
+            p {
+                margin: 10px 0;
+                font-size: 16px;
+            }
+
+            input[type="submit"], input[type="button"] {
+                cursor: pointer;
+                padding: 8px 12px;
+                font-size: 14px;
+                margin: 10px 5px 20px;
+                border-radius: 5px;
+                border: 1px solid #CCC;
+                background-color: #F0F0F0;
+            }
+
+            input[type="submit"]:hover, input[type="button"]:hover {
+                background-color: #E0E0E0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h2>Delete Student</h2>
+
+        <div class="container_delete">
+            <p>Are you sure you want to delete the following student?</p>
+            <p><strong>First Name: </strong><span th:text="${student.firstName}"></span></p>
+            <p><strong>Last Code: </strong><span th:text="${student.lastName}"></span></p>
+            <p><strong>Index: </strong><span th:text="${student.index}"></span></p>
+            <p><strong>Subjects: </strong>
+                <span th:if="${#lists.isEmpty(student.subjects)}">None</span>
+                <span th:if="${!#lists.isEmpty(student.subjects)}" th:each="subject, i : ${student.subjects}" th:text="${subject.subjectName} + ${!i.last ? ', ' : ''}"></span>
+            </p>
+            <form id="deleteForm">
+                <input type="hidden" name="studentId" th:value="${student.id}"/>
+
+                <input type="submit" value="Yes"/>
+                <input type="button" onclick="location.href = '/students'" value="No"/>
+            </form>
+        </div>
+
+        <script>
+            document.getElementById('deleteForm').onsubmit = function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(this);
+                const studentId = formData.get('studentId');
+
+                fetch(`http://localhost:8080/api/students/${studentId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                        alert('Student deleted successfully!');
+                        location.href = '/students';
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
+            };
+        </script>
+    </body>
+
+</html>

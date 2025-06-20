@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+    <head>
+        <title>Update Subject</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #F8F9FA;
+                margin: 0;
+                padding: 20px;
+            }
+
+            h2 {
+                text-align: center;
+                color: #333;
+            }
+
+            .container_update {
+                display: flex;
+                flex-direction: column;
+                max-width: 400px;
+                margin: auto;
+                padding: 20px;
+                background-color: #FFF;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            form label {
+                font-weight: bold;
+                margin-top: 10px;
+                text-align: center;
+                width: 100%;
+            }
+
+            form input[type="text"] {
+                margin-bottom: 15px;
+                padding: 8px;
+                font-size: 14px;
+                width: calc(100% - 20px);
+                border-radius: 5px;
+                border: 1px solid #CCC;
+            }
+
+            input[type="submit"], input[type="button"] {
+                cursor: pointer;
+                padding: 8px 12px;
+                font-size: 14px;
+                margin-top: 10px;
+                margin-bottom: 20px;
+                width: auto;
+                border-radius: 5px;
+                border: 1px solid #CCC;
+                background-color: #F0F0F0;
+            }
+
+            input[type="submit"]:hover, input[type="button"]:hover {
+                background-color: #E0E0E0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h2>Update Subject</h2>
+
+        <div class="container_update">
+            <form id="updateForm">
+                <input type="hidden" name="subjectId" th:value="${subject.id}"/>
+
+                <label for="newSubjectName">Insert New Subject Name: </label>
+                <input type="text" id="newSubjectName" name="newSubjectName" th:value="${subject.subjectName}" required>
+
+                <label for="newSubjectCode">Insert New Subject Code: </label>
+                <input type="text" id="newSubjectCode" name="newSubjectCode" th:value="${subject.subjectCode}" required>
+
+                <input type="submit" value="Update Subject"/>
+                <input type="button" onclick="location.href = '/subjects'" value="Cancel"/>
+            </form>
+        </div>
+
+        <script>
+            document.getElementById('updateForm').onsubmit = function(event) {
+                event.preventDefault();
+
+                const subjectId = document.querySelector('input[name="subjectId"]').value;
+                const newSubjectName = document.getElementById('newSubjectName').value;
+                const newSubjectCode = document.getElementById('newSubjectCode').value;
+
+                fetch(`http://localhost:8080/api/subjects/${subjectId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ subjectName: newSubjectName, subjectCode: newSubjectCode })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('A subject with the same code already exists!');
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    alert('Subject updated successfully!');
+                    location.href = '/subjects';
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
+            };
+        </script>
+    </body>
+
+</html>
