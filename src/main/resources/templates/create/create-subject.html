@@ -1,115 +1,94 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Subject</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1>Create Subject</h1>
+<form id="subject-form">
+    <div class="form-group">
+        <label for="subject-name">Name of Subject:</label>
+        <input type="text" id="subject-name" name="subjectName" required>
+    </div>
+    <div class="form-group">
+        <label for="subject-code">Code:</label>
+        <input type="text" id="subject-code" name="subjectCode" required>
+    </div>
+    <div class="form-group">
+        <label for="professor">Name of Professor:</label>
+        <input type="text" id="professor" name="professor" required>
+    </div>
+    <div class="form-group">
+        <label for="department">Department:</label>
+        <input type="text" id="department" name="department" required>
+    </div>
+    <div class="form-group">
+        <label for="ects">ECTS:</label>
+        <input type="number" id="ects" name="ects" min="1" required>
+    </div>
+    <div class="form-group">
+        <label for="prerequisites">Prerequisites:</label>
+        <input type="text" id="prerequisites" name="prerequisites">
+    </div>
+    <button type="submit">Submit</button>
+</form>
 
-    <head>
-        <title>Create Subject</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #F8F9FA;
-                margin: 0;
-                padding: 20px;
-            }
-
-            h2 {
-                text-align: center;
-                color: #333;
-            }
-
-            .container_add {
-                display: flex;
-                flex-direction: column;
-                max-width: 400px;
-                margin: auto;
-                padding: 20px;
-                background-color: #FFF;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            }
-
-            form label {
-                font-weight: bold;
-                margin-top: 10px;
-                text-align: center;
-                width: 100%;
-            }
-
-            form input[type="text"] {
-                margin-bottom: 15px;
-                padding: 8px;
-                font-size: 14px;
-                width: calc(100% - 20px);
-                border-radius: 5px;
-                border: 1px solid #CCC;
-                margin-right: 20px;
-            }
-
-            input[type="submit"], input[type="button"] {
-                cursor: pointer;
-                padding: 8px 12px;
-                font-size: 14px;
-                margin-top: 10px;
-                margin-bottom: 20px;
-                width: auto;
-                border-radius: 5px;
-                border: 1px solid #CCC;
-                background-color: #F0F0F0;
-            }
-
-            input[type="submit"]:hover, input[type="button"]:hover {
-                background-color: #E0E0E0;
-            }
-        </style>
-    </head>
-
-    <body>
-        <h2>Create Subject</h2>
-
-        <div class="container_add">
-            <form id="createForm">
-                <label for="subjectName">Insert Subject Name: </label>
-                <input type="text" id="subjectName" name="subjectName" required/>
-
-                <label for="subjectCode">Insert Subject Code: </label>
-                <input type="text" id="subjectCode" name="subjectCode" required/>
-
-                <input type="submit" value="Create Subject"/>
-                <input type="button" onclick="location.href = '/home'" value="Cancel"/>
-            </form>
-        </div>
-
-        <script>
-            document.getElementById('createForm').onsubmit = function(event) {
-                event.preventDefault();
-
-                const subjectName = document.getElementById('subjectName').value;
-                const subjectCode = document.getElementById('subjectCode').value;
-
-                fetch('http://localhost:8080/api/subjects', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ subjectName, subjectCode })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('A subject with the same code already exists!');
-                    }
-                    return response.json();
-                })
-                .then(() => {
-                    alert('Subject created successfully!');
-                    document.getElementById('createForm').reset();
-                })
-                .catch(error => {
-                    alert('Error: ' + error.message);
-                });
-            };
-        </script>
-    </body>
-
+<script>
+    // Handle form submission
+    document.getElementById('subject-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = {
+            subjectName: formData.get('subjectName'),
+            subjectCode: formData.get('subjectCode'),
+            professor: formData.get('professor'),
+            department: formData.get('department'),
+            ects: formData.get('ects'),
+            prerequisites: formData.get('prerequisites')
+        };
+        console.log('Subject Data:', data);
+        alert('Subject created! Check console for data.');
+        e.target.reset(); // Reset form after submission
+    });
+</script>
+</body>
 </html>

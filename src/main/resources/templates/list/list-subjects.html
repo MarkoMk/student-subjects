@@ -5,63 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subjects</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 1000px;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        a {
-            display: block;
-            text-align: center;
-            margin-bottom: 20px;
-            color: #007bff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f2f2f2;
-            color: #333;
-        }
-        tr:hover {
-            background-color: #f5f5f5;
-        }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .header { background-color: #f4f4f4; padding: 20px; text-align: left; }
+        .tabs { background-color: #333; overflow: hidden; }
+        .tabs a { float: left; color: white; text-align: center; padding: 14px 16px; text-decoration: none; font-size: 17px; }
+        .tabs a:hover { background-color: #ddd; color: black; }
+        .tabs a.active { background-color: #4CAF50; color: white; }
+        .content { padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .home-link { margin-bottom: 20px; display: block; }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Subjects</h1>
-    <a href="home.html">Click here to return to the Home page</a>
+<div class="header">
+    <h1>Student: John Doe</h1>
+    <p>Index Number: 12345</p>
+    <p>Faculty: Faculty of Science</p>
+    <p>Department: Computer Science</p>
+</div>
+<div class="tabs">
+    <a href="index.html">Home</a>
+    <a href="list-subjects.html" class="active">Subjects</a>
+    <a href="list-available-subjects.html">List of Available Subjects</a>
+    <a href="calendar.html">Calendar</a>
+</div>
+<div class="content">
+    <h2>Subjects</h2>
     <table>
-        <thead>
         <tr>
             <th>Name of Subject</th>
             <th>Code</th>
@@ -70,9 +42,6 @@
             <th>ECTS</th>
             <th>Prerequisites</th>
         </tr>
-        </thead>
-        <tbody>
-        <!-- Sample data; replace with dynamic data as needed -->
         <tr>
             <td>Mathematics</td>
             <td>MATH101</td>
@@ -89,7 +58,6 @@
             <td>5</td>
             <td>MATH101</td>
         </tr>
-        </tbody>
     </table>
 </div>
 </body>
