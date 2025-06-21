@@ -16,6 +16,8 @@
     th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
     th { background-color: #f2f2f2; }
     .home-link { margin-bottom: 20px; display: block; }
+    .select-btn { padding: 5px 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+    .select-btn:hover { background-color: #45a049; }
   </style>
 </head>
 <body>
@@ -26,14 +28,13 @@
   <p>Department: Computer Science</p>
 </div>
 <div class="tabs">
-  <a href="index.html">Home</a>
+  <a href="student-home.html">Home</a>
   <a href="list-subjects.html">Subjects</a>
   <a href="list-available-subjects.html" class="active">List of Available Subjects</a>
   <a href="calendar.html">Calendar</a>
 </div>
 <div class="content">
   <h2>List of Available Subjects</h2>
-  <p>Placeholder content for available subjects.</p>
   <table>
     <tr>
       <th>Name of Subject</th>
@@ -42,6 +43,7 @@
       <th>Department</th>
       <th>ECTS</th>
       <th>Prerequisites</th>
+      <th>Action</th>
     </tr>
     <tr>
       <td>Chemistry</td>
@@ -50,8 +52,19 @@
       <td>Chemistry</td>
       <td>5</td>
       <td>None</td>
+      <td><button class="select-btn" onclick="confirmSelect('Chemistry')">Select</button></td>
     </tr>
   </table>
 </div>
+<script>
+  function confirmSelect(subjectName) {
+    const confirmed = confirm(`Do you really wish to select this subject: ${subjectName}?`);
+    if (confirmed) {
+      alert(`${subjectName} selected!`);
+    } else {
+      alert(`Selection of ${subjectName} cancelled.`);
+    }
+  }
+</script>
 </body>
 </html>
